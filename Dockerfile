@@ -6,6 +6,7 @@ RUN set -xe \
       bash \
       curl \
       wget \
+      git \
       ncurses-terminfo-base \
       ncurses5-libs \
       ncurses-terminfo \
