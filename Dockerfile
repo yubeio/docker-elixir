@@ -47,7 +47,8 @@ RUN set -xe \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
 
-# RUN  mix local.hex --force \
-#   && mix local.rebar --force
+RUN set -xe \
+  && mix local.hex --force \
+  && mix local.rebar --force
 
 CMD ["iex"]
