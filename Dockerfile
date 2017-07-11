@@ -8,6 +8,7 @@ RUN set -xe \
       wget \
       git \
       build-base \
+      imagemagick \
       ncurses-terminfo-base \
       ncurses5-libs \
       ncurses-terminfo \
