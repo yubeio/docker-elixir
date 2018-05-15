@@ -1,54 +1,45 @@
-FROM alpine:3.6
+# base image elixer to start with
+FROM elixir:1.6.5-alpine
 
-# Erlang
+# build with command:
+# docker build -t hive-elixir:1.6.5-alpine ./
+
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
+ENV TERM xterm
+ENV REPLACE_OS_VARS true
+
+# Install dependencies
 RUN set -xe \
   && apk add --no-cache \
-      bash \
-      curl \
-      wget \
-      git \
       build-base \
+      bash \
+      ca-certificates \
+      postgresql-client \
       imagemagick \
-      ncurses-terminfo-base \
-      ncurses5-libs \
-      ncurses-terminfo \
-      ncurses-libs \
-      erlang-kernel \
-      erlang-stdlib \
-      erlang-compiler \
-      erlang-kernel \
-      erlang-stdlib \
-      erlang-compiler \
-      erlang-crypto \
-      erlang-syntax-tools \
-      erlang-inets \
-      erlang-ssl \
-      erlang-public-key \
-      erlang-asn1 \
-      erlang-sasl \
-      erlang-erl-interface \
-      erlang-dev \
-      erlang-eunit \
-      erlang-parsetools \
-      erlang-xmerl \
-      erlang \
+      git \
+      curl \
+      openssh \
+      ncurses \
+      httpie \
   && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
 
-ENV ELIXIR_VERSION="v1.4.5"
+ENV SHELL=/bin/bash
 
-RUN set -xe \
-  && ELIXIR_DOWNLOAD_URL="https://github.com/elixir-lang/elixir/releases/download/${ELIXIR_VERSION}/Precompiled.zip" \
-  && ELIXIR_DOWNLOAD_SHA256="a740e634e3c68b1477e16d75a0fd400237a46c62ceb5d04551dbc46093a03f98"\
-  && apk add --no-cache --virtual .build-deps \
-      unzip \
-  && curl -fSL -o elixir-precompiled.zip $ELIXIR_DOWNLOAD_URL \
-  && unzip -d /usr/local elixir-precompiled.zip \
-  && rm elixir-precompiled.zip \
-  && apk del .build-deps \
-  && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
+# install hex package manager
+RUN mix local.hex --force
+RUN mix local.rebar --force
 
-RUN set -xe \
-  && mix local.hex --force \
-  && mix local.rebar --force
+# install dockerize
+RUN set -ex \
+  && DOCKERIZE_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/dockerize-latest.tar.gz" \
+  && curl --silent --show-error --location --fail --retry 3 --output /tmp/dockerize-linux-amd64.tar.gz $DOCKERIZE_URL \
+  && tar -C /usr/local/bin -xzvf /tmp/dockerize-linux-amd64.tar.gz \
+  && rm -rf /tmp/dockerize-linux-amd64.tar.gz
+
+# Procfile runner
+RUN set -ex \
+  && curl https://github.com/chrismytton/shoreman/raw/master/shoreman.sh -sLo /bin/shoreman \
+  && chmod 755 /bin/shoreman
 
 CMD ["iex"]
