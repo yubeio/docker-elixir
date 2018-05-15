@@ -42,4 +42,8 @@ RUN set -ex \
   && curl https://github.com/chrismytton/shoreman/raw/master/shoreman.sh -sLo /bin/shoreman \
   && chmod 755 /bin/shoreman
 
+# create app folder
+RUN mkdir /app
+WORKDIR /app
+
 CMD ["iex"]
