@@ -1,8 +1,8 @@
-# base image elixer to start with
-FROM elixir:1.6.5-alpine
-
 # build with command:
-# docker build -t hive-elixir:1.6.5-alpine ./
+# docker build -t hive-elixir:1.7-alpine ./
+
+# base image elixer to start with
+FROM elixir:1.7-alpine
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -11,17 +11,7 @@ ENV REPLACE_OS_VARS true
 
 # Install dependencies
 RUN set -xe \
-  && apk add --no-cache \
-      build-base \
-      bash \
-      ca-certificates \
-      postgresql-client \
-      imagemagick \
-      git \
-      curl \
-      openssh \
-      ncurses \
-      httpie \
+  && apk add --no-cache build-base bash ca-certificates postgresql-client imagemagick git curl openssh ncurses httpie \
   && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
 
 ENV SHELL=/bin/bash
