@@ -30,13 +30,6 @@ ENV SHELL=/bin/bash
 RUN mix local.hex --force
 RUN mix local.rebar --force
 
-# install dockerize
-RUN set -ex \
-  && DOCKERIZE_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/dockerize-latest.tar.gz" \
-  && curl --silent --show-error --location --fail --retry 3 --output /tmp/dockerize-linux-amd64.tar.gz $DOCKERIZE_URL \
-  && tar -C /usr/local/bin -xzvf /tmp/dockerize-linux-amd64.tar.gz \
-  && rm -rf /tmp/dockerize-linux-amd64.tar.gz
-
 # Procfile runner
 RUN set -ex \
   && curl https://github.com/chrismytton/shoreman/raw/master/shoreman.sh -sLo /bin/shoreman \
