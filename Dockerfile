@@ -11,7 +11,9 @@ ENV REPLACE_OS_VARS true
 
 # Install dependencies
 RUN set -xe \
-  && apk add --no-cache build-base bash ca-certificates postgresql-client imagemagick git curl openssh ncurses httpie \
+  && apk update \
+  && apk add --no-cache build-base bash ca-certificates postgresql-client msttcorefonts-installer poppler-utils imagemagick git curl openssh ncurses httpie \
+  && update-ms-fonts \
   && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
 
 ENV SHELL=/bin/bash
