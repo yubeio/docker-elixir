@@ -1,0 +1,21 @@
+# Push image to docker-hub (or registry_url)
+
+# parameters:
+#   [registry_url] registry url from provider (optional)
+#   [version] to be tagged
+#   [username] from docker hub
+#   [~/token.txt] `token only` file from docker hub
+
+version=$1
+username=$2
+registry_url=$3 # optional
+
+IMAGE_NAME=yube/elixir
+VERSION_ALPINE=${version}-alpine
+TAG=${IMAGE_NAME}:${VERSION_ALPINE}
+
+docker build ${registry_url} . -t $TAG && \
+    cat ~/token.txt | docker login ${registry_url} -u ${username} --password-stdin && \
+    docker push ${TAG} && \
+    git tag ${VERSION_ALPINE} && \
+    git push origin --tags
