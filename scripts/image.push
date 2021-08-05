@@ -1,0 +1,15 @@
+# Push image to docker-hub
+
+# parameters:
+# 	[version] to be tagged
+# 	[username] from docker hub
+# 	[~/token.txt] `token only` file from docker hub
+
+version=$1
+username=$2
+
+TAG=yube/elixir:${version}-alpine
+
+docker build . -t $TAG && \
+	cat ~/token.txt | docker login -u ${username} --password-stdin && \
+	docker push yube/elixir:${version}-alpine
