@@ -2,7 +2,7 @@
 # docker build -t hive-elixir:1.11-alpine ./
 
 # base image elixer to start with
-FROM elixir:1.14.5-alpine
+FROM elixir:1.14.5-otp-25-alpine
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
